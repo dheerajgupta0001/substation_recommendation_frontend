@@ -1,0 +1,84 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Latest Recommendation{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Latest Recommendation</h1>
+    <div class="row align-content-center">
+        <form class="form-inline" method="POST">
+            <button id="fetchIegcViolMsgsBtn" class="btn btn-success btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-sync"></i>
+                </span>
+                <span class="text">Refresh</span>
+            </button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+    
+    <script type="text/javascript" src="{{ url_for('static', filename='app/index.js') }}"></script>
+
+    <script>
+    $(document).ready(function() {
+        // Setup - add a text input to each footer cell
+        $('#recommendationID tfoot th').each(function () {
+            //var title = $(this).text();
+            $(this).html('<input type="text" placeholder="Search" />');
+        });
+        var filesTable = $('#recommendationID').DataTable({
+            columns: [
+                        { title: "Timestamp", data: "timestamp" },
+                        { title: "Substation Name", data: "substationName" },
+                        { title: "Recommendation", data: "recommendation" },
+                        { title: "Voltage", data: "voltage" }
+                    ],
+            fixedHeader: true,
+            "lengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+            "pageLength": 50,
+            dom: 'Bfrtip',
+            "order": [[0, "asc"]],
+            buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print'],
+            pageLength: 10,
+            responsive: true
+        });
+        startPeriodicRefresh();
+        var r = $('#recommendationID tfoot tr');
+        r.find('th').each(function () {
+            $(this).css('padding', '3px');
+        });
+        $('#recommendationID thead').append(r);
+        // Apply the filter
+        // https://www.jqueryscript.net/demo/DataTables-Jquery-Table-Plugin/examples/api/multi_filter.html
+        $("#recommendationID thead input").on('keyup change', function () {
+            filesTable
+                .column($(this).parent().index() + ':visible')
+                .search(this.value)
+                .draw();
+        });
+    });
+    </script>
+    
+    
+    <style>
+        thead input {
+            padding: 2px;
+            box-sizing: border-box;
+            font-size: small;
+            width: 100%
+        }
+    </style>
+
+{% endblock %}

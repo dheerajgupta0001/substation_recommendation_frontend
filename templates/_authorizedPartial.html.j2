@@ -1,0 +1,21 @@
+{% if user %}
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item">
+        <a class="nav-link" href='#'>
+            <i class="fas fa-th-large"></i>
+            <span>Web Dashboard</span>
+        </a>
+    </li>
+{% endif %}
+<!-- Nav Item - Dashboard -->
+<li class="nav-item">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseRecommendation" aria-expanded="false" aria-controls="collapseRecommendation">
+        <span>Latest Recommendation</span>
+    </a>
+    <div id="collapseRecommendation" class="collapse show" aria-labelledby="headingFreq" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{{ url_for('latestRecommendation.displayLatestRecommendation') }}">Actionable Recommendation</a>
+        <a class="collapse-item" href="{{ url_for('latestRecommendation.displayInformationalRecommendation') }}">Informational Recommendation</a>
+        </div>
+    </div>
+</li>

@@ -1,0 +1,48 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Plot Data{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Plot Data</h1>
+    <div id=subStation></div>
+{% endblock %}
+    
+{% block scripts %}
+    <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename= 'isgs/index.js') }}"></script>
+    <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename= 'node_modules/plotly.js-dist/plotly.js') }}"></script>
+        {% set dfData = data %}
+    <script>
+        var isgsName = {{ isgsName|safe }};
+        var isgsDisplayList = {{ isgsDisplayList|safe }};
+        var dfData_gGlob = {{ dfData|safe }};
+        window.onload = function() {
+            loadPlotData();
+        }
+    </script>
+    {% endif %}
+    <style>
+        thead input {
+            padding: 2px;
+            box-sizing: border-box;
+            font-size: small;
+            width: 100%
+        }
+        .rightSpan{
+                float:right;
+                font-size: 22px;
+            }
+            @page{
+            size:auto;
+            }
+            @media print {
+            .pagebrk {
+                clear: both;
+                page-break-after: always;
+            }
+        }
+    </style>
+
+{% endblock %}
