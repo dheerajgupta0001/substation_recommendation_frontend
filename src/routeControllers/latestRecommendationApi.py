@@ -19,7 +19,6 @@ def fetchLatestRecommendation():
         # get iegc violation messages
         latestRecommendationSummaryRepo = RecommendationSummaryRepo(dbConfig.appDbConnStr)
         data1: List[ILatestRecommendationSummary] = latestRecommendationSummaryRepo.fetchLatestRecommendation(True)
-
         data2: List[ILatestRecommendationSummary] = latestRecommendationSummaryRepo.fetchLatestRecommendation(False)
 
         data['data1'] = data1

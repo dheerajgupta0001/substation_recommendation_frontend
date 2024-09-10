@@ -1,7 +1,17 @@
 // Wait for the DOM to be ready
 $(document).ready(function() {
     // Initialize the DataTable
-    var table = $('#recommendationID').DataTable({
+    var activeTable = null;
+
+    // send selected data
+    function sendSelectedData(data) {
+        // $('#selectedTableId').val(tableId);
+        $('#selectedData').val(JSON.stringify(data));
+        $('#selectedDataForm').submit();
+    }
+
+
+    var table1 = $('#recommendationID').DataTable({
         columns: [
             { title: "Timestamp", data: "time_stamp" },
             { title: "Substation Name", data: "substation_name" },
@@ -15,7 +25,11 @@ $(document).ready(function() {
         "order": [[0, "desc"]],
         buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print'],
         pageLength: 10,
-        responsive: true
+        responsive: true,
+        // select: true
+        select: {
+            style: 'single'
+        }
     });
 
     var table2 = $('#informationalRecommendation').DataTable({
@@ -32,7 +46,53 @@ $(document).ready(function() {
         "order": [[0, "desc"]],
         buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print'],
         pageLength: 10,
-        responsive: true
+        responsive: true,
+        select: {
+            style: 'single'
+        }
+    });
+
+    // Function to handle table activation
+    function activateTable(table) {
+        if (activeTable && activeTable !== table) {
+            activeTable.rows().deselect();
+        }
+        activeTable = table;
+    }
+
+    // Event listener for row selection on table1
+    table1.on('select', function (e, dt, type, indexes) {
+        if (type === 'row') {
+            activateTable(table1);
+            var data = table1.rows(indexes).data().toArray();
+            id = data[0];
+            // debugger;
+            console.log('Selected data from table1:', data);
+            // sendSelectedData('table1', id);
+            sendSelectedData(id);
+            // Do something with the selected data
+        }
+    });
+
+    // Event listener for row selection on table2
+    table2.on('select', function (e, dt, type, indexes) {
+        if (type === 'row') {
+            activateTable(table2);
+            var data = table2.rows(indexes).data().toArray();
+            id = data[0];
+            console.log('Selected data from table2:', data);
+            sendSelectedData(id);
+            // Do something with the selected data
+        }
+    });
+
+    // Event listeners for table focus
+    $('#table1').on('click', function() {
+        activateTable(table1);
+    });
+
+    $('#table2').on('click', function() {
+        activateTable(table2);
     });
 
     // Function to refresh the DataTable
@@ -43,7 +103,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(data) {
                 // Clear existing data and add new data
-                table.clear().rows.add(data['data']['data1']).draw();
+                table1.clear().rows.add(data['data']['data1']).draw();
                 // debugger;
                 table2.clear().rows.add(data['data']['data2']).draw();
                 console.log('DataTable refreshed at ' + new Date().toLocaleTimeString());
@@ -60,7 +120,7 @@ $(document).ready(function() {
         refreshDataTable();
         
         // Set up interval to refresh every 30 seconds
-        setInterval(refreshDataTable, 30000);
+        setInterval(refreshDataTable, 90000);
     }
 
     // Start the periodic refresh
