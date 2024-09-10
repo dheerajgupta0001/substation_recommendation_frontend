@@ -28,26 +28,26 @@ def displayLatestRecommendation():
     # in case of get request just return the html template
     # return render_template('Recommendations/latestRecommendation.html.j2')
 
-@latestRecommendationPage.route('/', methods=['GET', 'POST'])
-# @role_required('code_book_editor')
-def displayInformationalRecommendation():
-    # get application config
-    dbConfig = getJsonConfig()
+# @latestRecommendationPage.route('/', methods=['GET', 'POST'])
+# # @role_required('code_book_editor')
+# def displayInformationalRecommendation():
+#     # get application config
+#     dbConfig = getJsonConfig()
 
-    # get the instance of min_wise demand storage repository
-    # latestRecommendationSummaryRepo= RecommendationSummaryRepo(dbConfig.appDbConnStr)
-    # in case of post request, fetch 
-    # if request.method == 'POST':
-    latestRecommendationSummaryRepo = LatestRecommendationFetcher(dbConfig.latestatestRecommendationFetchUrl)
+#     # get the instance of min_wise demand storage repository
+#     # latestRecommendationSummaryRepo= RecommendationSummaryRepo(dbConfig.appDbConnStr)
+#     # in case of post request, fetch 
+#     # if request.method == 'POST':
+#     latestRecommendationSummaryRepo = LatestRecommendationFetcher(dbConfig.latestatestRecommendationFetchUrl)
     
-    # fetch scada sem data from db via the repository instance of ith state
-    resp = latestRecommendationSummaryRepo.fetchLatestRecommendation()
+#     # fetch scada sem data from db via the repository instance of ith state
+#     resp = latestRecommendationSummaryRepo.fetchLatestRecommendation()
 
-    data = resp['data']
+#     data = resp['data']
 
-    return render_template('Recommendations/test.html.j2', data=data)
-    # in case of get request just return the html template
-    # return render_template('Recommendations/latestRecommendation.html.j2')
+#     return render_template('Recommendations/test.html.j2', data=data)
+#     # in case of get request just return the html template
+#     # return render_template('Recommendations/latestRecommendation.html.j2')
 
 @latestRecommendationPage.route('/', methods=['GET', 'POST'])
 # @role_required('code_book_editor')

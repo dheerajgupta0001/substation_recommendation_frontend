@@ -19,7 +19,7 @@ class RecommendationSummaryRepo():
         # print(dbConStr)
 
     # def fetchLatestRecommendation(self) -> List[ILatestRecommendationSummary]:
-    def fetchLatestRecommendation(self) -> bool:
+    def fetchLatestRecommendation(self, isRecommendation: bool) -> bool:
         """_summary_
 
         Returns:
@@ -35,12 +35,7 @@ class RecommendationSummaryRepo():
             # Create a cursor object using the connection
             dbCur = conn.cursor()
 
-            # Fetch data from the database
-            # dbCur.execute('SELECT * FROM "Latest_Recommendation"')
-            # data = dbCur.fetchall()
-            # print(data)
-
-            sql_fetch = 'SELECT * FROM "Latest_Recommendation" where "isRecommendation" order by time_stamp desc'
+            sql_fetch = 'SELECT * FROM "Latest_Recommendation" where "isRecommendation" = {0} order by time_stamp desc'.format(isRecommendation)
 
             data = pd.read_sql(sql_fetch, con=conn)
             # print(data)

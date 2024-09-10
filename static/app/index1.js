@@ -18,6 +18,23 @@ $(document).ready(function() {
         responsive: true
     });
 
+    var table2 = $('#informationalRecommendation').DataTable({
+        columns: [
+            { title: "Timestamp", data: "time_stamp" },
+            { title: "Substation Name", data: "substation_name" },
+            { title: "Recommendation", data: "recommendation" },
+            { title: "Voltage", data: "voltage_str" }
+        ],
+        fixedHeader: true,
+        "lengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+        "pageLength": 50,
+        dom: 'Bfrtip',
+        "order": [[0, "desc"]],
+        buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print'],
+        pageLength: 10,
+        responsive: true
+    });
+
     // Function to refresh the DataTable
     function refreshDataTable() {
         $.ajax({
@@ -26,8 +43,9 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(data) {
                 // Clear existing data and add new data
-                table.clear().rows.add(data['data']).draw();
+                table.clear().rows.add(data['data']['data1']).draw();
                 // debugger;
+                table2.clear().rows.add(data['data']['data2']).draw();
                 console.log('DataTable refreshed at ' + new Date().toLocaleTimeString());
             },
             error: function(xhr, status, error) {
