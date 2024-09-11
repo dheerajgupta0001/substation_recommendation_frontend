@@ -14,10 +14,15 @@ latestRecommendationApiPage = Blueprint('latestRecommendationApi', __name__,
 def fetchLatestRecommendation():
     # get application config
     dbConfig = getJsonConfig()
+    data = {}
     try:
         # get iegc violation messages
         latestRecommendationSummaryRepo = RecommendationSummaryRepo(dbConfig.appDbConnStr)
-        data: List[ILatestRecommendationSummary] = latestRecommendationSummaryRepo.fetchLatestRecommendation()
+        data1: List[ILatestRecommendationSummary] = latestRecommendationSummaryRepo.fetchLatestRecommendation(True)
+        data2: List[ILatestRecommendationSummary] = latestRecommendationSummaryRepo.fetchLatestRecommendation(False)
+
+        data['data1'] = data1
+        data['data2'] = data2
 
         if data:
             return jsonify({'message': 'Success!!!', 'data': data})

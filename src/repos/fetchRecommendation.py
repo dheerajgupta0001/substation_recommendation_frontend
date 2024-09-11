@@ -19,7 +19,7 @@ class RecommendationSummaryRepo():
         # print(dbConStr)
 
     # def fetchLatestRecommendation(self) -> List[ILatestRecommendationSummary]:
-    def fetchLatestRecommendation(self) -> bool:
+    def fetchLatestRecommendation(self, isRecommendation: bool) -> bool:
         """_summary_
 
         Returns:
@@ -35,12 +35,7 @@ class RecommendationSummaryRepo():
             # Create a cursor object using the connection
             dbCur = conn.cursor()
 
-            # Fetch data from the database
-            # dbCur.execute('SELECT * FROM "Latest_Recommendation"')
-            # data = dbCur.fetchall()
-            # print(data)
-
-            sql_fetch = 'SELECT * FROM "Latest_Recommendation" where "isRecommendation" order by time_stamp desc'
+            sql_fetch = 'SELECT * FROM "Latest_Recommendation" where "isRecommendation" = {0} order by time_stamp desc'.format(isRecommendation)
 
             data = pd.read_sql(sql_fetch, con=conn)
             # print(data)
@@ -59,6 +54,7 @@ class RecommendationSummaryRepo():
         latestRecommendationList: List[ILatestRecommendationSummary] = []
         for i in data.index:
             latestRecommendation: ILatestRecommendationSummary = {
+                'id':str(data['Id'][i]),
                 'time_stamp': dt.datetime.strftime(data['time_stamp'][i], "%Y-%m-%d %X"),
                 'substation_name': data['substation_name'][i],
                 'recommendation': data['recommendation'][i],
@@ -66,3 +62,44 @@ class RecommendationSummaryRepo():
             }
             latestRecommendationList.append(latestRecommendation)
         return latestRecommendationList
+    
+    def fetchRecommendationById(self, id: int) -> bool:
+        """_summary_
+
+        Returns:
+            List[ILatestRecommendationSummary]: _description_
+        """
+        try:
+            dbConfig = getJsonConfig()
+            dbConn = None
+            dbCur = None
+            # Connect to your PostgreSQL database
+            conn = psycopg2.connect(host=dbConfig.db_host, dbname=dbConfig.db_name,
+                                    user=dbConfig.db_username, password=dbConfig.db_password)
+            # Create a cursor object using the connection
+            dbCur = conn.cursor()
+
+            sql_fetch = 'SELECT * FROM "Latest_Recommendation" where "Id" = {0} order by time_stamp desc'.format(id)
+
+            data = pd.read_sql(sql_fetch, con=conn)
+            # print(data)
+
+        except Exception as err:
+            print('Error while inserting unit name for {} from master table'.format())
+            print(err)
+
+        finally:
+            if dbCur is not None:
+                dbCur.close()
+            if dbConn is not None:
+                dbConn.close()
+    
+        for i in data.index:
+            recommendationById: ILatestRecommendationSummary = {
+                'id':data['Id'][i],
+                'time_stamp': dt.datetime.strftime(data['time_stamp'][i], "%Y-%m-%d %X"),
+                'substation_name': data['substation_name'][i],
+                'recommendation': data['recommendation'][i],
+                'voltage_str': data['voltage_str'][i]
+            }
+        return recommendationById
