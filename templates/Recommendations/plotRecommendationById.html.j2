@@ -9,25 +9,32 @@
     <h1>Plot Data</h1>
     <div id=subStation></div>
     <div id=details>
-        <br>Subsation Name: <input type="text" id="subStationField" value="Initial value"></br>
-        <br>Recommendation: </br>
+        <p style="margin: 0; display: inline;">Subsation Name: </p>
+        <p style="margin: 0; display: inline; background-color: palegoldenrod;" align="right" id="subStationField">content2</p>
+        <br>
+        <p style="margin: 0; display: inline;">Recommendation:</p>
+        <p style="margin: 0; display: inline; background-color: palegoldenrod;" align="right" id="recommendationField">content2</p>
+        <br>
         <a class="collapse-item" href="{{ url_for('latestRecommendation.displayLatestRecommendation') }}">Recommendations Page</a>
     </div>
 {% endblock %}
     
 {% block scripts %}
-    <script type="text/javascript" src="{{ url_for('static', filename='app/plotRecommendationById.js') }}"></script>
     <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename= 'node_modules/plotly.js-dist/plotly.js') }}"></script>
 
     {% set dfData = data %}
-    {% set substationName = substation_name %}
     <script>
         var dfData = {{ dfData|safe }};
+        var substationName = {{ substation_name | tojson | safe  }};
+        var recommendation = {{ recommendation | tojson | safe  }};
+        console.log(substationName)
+        console.log(recommendation)
         window.onload = function() {
-            loadPlotData();
-            loadPlotDetails();
+            loadPlotData(substationName);
+            loadPlotDetails(substationName, recommendation);
         }
     </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='app/plotRecommendationById.js') }}"></script>
     
     <style>
         thead input {

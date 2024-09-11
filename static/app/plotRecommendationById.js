@@ -1,4 +1,4 @@
-function loadPlotData() {
+function loadPlotData(substationName) {
     // Sample data - replace with your own list of values
     // var dfData_g = dfData
     var dfData_g = dfData;
@@ -28,8 +28,7 @@ function loadPlotData() {
 
 }
 
-function loadPlotDetails() {
-    var substationName = substationName;
-    let recomElement = document.getElementById('subStationField');
-    recomElement.value = substationName;
+function loadPlotDetails(substationName, recommendation) {
+    document.getElementById("recommendationField").innerHTML = recommendation;
+    document.getElementById("subStationField").innerHTML = substationName;
 }
