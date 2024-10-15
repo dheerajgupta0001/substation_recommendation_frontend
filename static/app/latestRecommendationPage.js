@@ -98,7 +98,7 @@ $(document).ready(function() {
     // Function to refresh the DataTable
     function refreshDataTable() {
         $.ajax({
-            url: 'http://localhost:8093/fetchLatestRecommendation',
+            url: 'http://10.2.100.182:8093/fetchLatestRecommendation',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
