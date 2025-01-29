@@ -1,8 +1,9 @@
 from typing import List
 from flask import Blueprint, render_template
-from src.config.appConfig import getJsonConfig
+from src.config.appConfig import getAppConfig
 from src.repos.fetchRecommendation import RecommendationSummaryRepo
 from src.services.latestRecommendationFetcher import LatestRecommendationFetcher
+from src.security.decorators import roles_required
 from flask import Flask, request, jsonify
 
 from src.typeDefs.latestRecommendationSummary import ILatestRecommendationSummary
@@ -11,9 +12,10 @@ latestRecommendationApiPage = Blueprint('latestRecommendationApi', __name__,
                                 template_folder='templates')
 
 @latestRecommendationApiPage.route('/', methods=['GET'])
+@roles_required(['recommendation_app_user'])
 def fetchLatestRecommendation():
     # get application config
-    dbConfig = getJsonConfig()
+    dbConfig = getAppConfig()
     data = {}
     try:
         # get iegc violation messages

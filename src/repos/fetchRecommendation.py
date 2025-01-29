@@ -1,7 +1,7 @@
 import datetime as dt
 import psycopg2
 from typing import List
-from src.config.appConfig import getJsonConfig
+from src.config.appConfig import getAppConfig
 from src.typeDefs.latestRecommendationSummary import ILatestRecommendationSummary
 import pandas as pd
 
@@ -26,7 +26,7 @@ class RecommendationSummaryRepo():
             List[ILatestRecommendationSummary]: _description_
         """
         try:
-            dbConfig = getJsonConfig()
+            dbConfig = getAppConfig()
             dbConn = None
             dbCur = None
             # Connect to your PostgreSQL database
@@ -70,7 +70,7 @@ class RecommendationSummaryRepo():
             List[ILatestRecommendationSummary]: _description_
         """
         try:
-            dbConfig = getJsonConfig()
+            dbConfig = getAppConfig()
             dbConn = None
             dbCur = None
             # Connect to your PostgreSQL database

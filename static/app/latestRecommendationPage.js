@@ -97,8 +97,12 @@ $(document).ready(function() {
 
     // Function to refresh the DataTable
     function refreshDataTable() {
+        // Add loading state to the button
+        $('.btn-success').prop('disabled', true);
+        $('.btn-success .fas').addClass('fa-spin');
         $.ajax({
-            url: 'http://10.2.100.182:8093/fetchLatestRecommendation',
+            // url: 'http://10.2.100.182:8093/fetchLatestRecommendation',
+            url: '/fetchLatestRecommendation',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -110,6 +114,11 @@ $(document).ready(function() {
             },
             error: function(xhr, status, error) {
                 console.error("Error fetching data: " + error);
+            },
+            complete: function() {
+                // Remove loading state from button
+                $('.btn-success').prop('disabled', false);
+                $('.btn-success .fas').removeClass('fa-spin');
             }
         });
     }
@@ -122,6 +131,10 @@ $(document).ready(function() {
         // Set up interval to refresh every 30 seconds
         setInterval(refreshDataTable, 90000);
     }
+    // Add click handler for the refresh button
+    $('.btn-success').on('click', function() {
+        refreshDataTable();
+    });
 
     // Start the periodic refresh
     startPeriodicRefresh();

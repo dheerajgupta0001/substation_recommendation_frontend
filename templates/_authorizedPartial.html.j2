@@ -9,12 +9,6 @@
 {% endif %}
 <!-- Nav Item - Dashboard -->
 <li class="nav-item">
-    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseRecommendation" aria-expanded="false" aria-controls="collapseRecommendation">
-        <span>Latest Recommendation</span>
-    </a>
-    <div id="collapseRecommendation" class="collapse show" aria-labelledby="headingFreq" data-parent="#accordionSidebar" style="">
-        <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="{{ url_for('latestRecommendation.displayLatestRecommendation') }}">Actionable Recommendation</a>
-        </div>
-    </div>
+    <a class="nav-link" href="{{ url_for('latestRecommendation.displayLatestRecommendation') }}">Actionable Recommendation</a>
+    <a class="nav-link" href="{{ url_for('pqVqViolation.displayPqVqViolation') }}">PQ Violation</a>
 </li>

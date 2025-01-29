@@ -2,7 +2,10 @@ import pandas as pd
 import json
 from src.config.jsonConfig import JsonConfig
 
-def loadJsonConfig(fName="config.json") -> JsonConfig:
+# initialize the app config global variable
+jsonConfig = {}
+
+def loadAppConfig(fName="config.json") -> JsonConfig:
     global jsonConfig
     with open(fName) as f:
         data = json.load(f)
@@ -10,6 +13,6 @@ def loadJsonConfig(fName="config.json") -> JsonConfig:
         return jsonConfig
 
 
-def getJsonConfig() -> JsonConfig:
+def getAppConfig() -> JsonConfig:
     global jsonConfig
     return jsonConfig

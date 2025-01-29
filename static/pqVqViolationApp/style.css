@@ -1,0 +1,166 @@
+/* DataTable Base Styles */
+.dataTables_wrapper {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header Styles */
+.dataTables_wrapper thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    padding: 12px 8px;
+    font-weight: 600;
+    color: #343a40;
+}
+
+/* Table Body Styles */
+.dataTables_wrapper tbody td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+/* Violation Status Badge Styles */
+.badge {
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+    color: white;
+}
+
+.bg-success {
+    background-color: #198754 !important;
+    color: white;
+}
+
+/* Row Hover Effects for Violations */
+.violation-pqvq-hover:hover td {
+    background-color: #ffcccc !important; /* Light red for PQ-VQ violation */
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.violation-vq-hover:hover td {
+    background-color: #a7c9fc !important; /* Light blue for VQ violation */
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.violation-pq-hover:hover td {
+    background-color: #fff3cd !important; /* Light yellow for PQ violation */
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.no-violation-hover:hover td {
+    background-color: #d1ffcd !important; /* Light Green fot No PQ VQ violation */
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+/* DataTable Control Styles */ 
+.dataTables_length,
+.dataTables_filter {
+    margin-bottom: 15px;
+}
+
+.dataTables_length select {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+}
+
+.dataTables_filter input {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+    margin-left: 8px;
+}
+
+/* Pagination Styles */
+.dataTables_paginate {
+    margin-top: 15px;
+}
+
+.paginate_button {
+    padding: 6px 12px;
+    margin: 0 2px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.paginate_button.current {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+
+.paginate_button:hover:not(.current) {
+    background-color: #e9ecef;
+}
+
+/* Button Styles */
+.dt-buttons {
+    margin-bottom: 15px;
+}
+
+.dt-button {
+    padding: 6px 12px;
+    margin-right: 5px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #212529;
+    cursor: pointer;
+}
+
+.dt-button:hover {
+    background-color: #e9ecef;
+}
+
+/* Responsive Table Styles */
+@media screen and (max-width: 767px) {
+    .dataTables_wrapper {
+        padding: 10px;
+    }
+    
+    .dataTables_length,
+    .dataTables_filter,
+    .dt-buttons {
+        float: none;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    .dataTables_filter input {
+        margin-left: 0;
+        margin-top: 5px;
+    }
+}
+
+/* Loading State Styles */
+.btn-success:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.fa-spin {
+    animation: fa-spin 2s infinite linear;
+}
+
+@keyframes fa-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

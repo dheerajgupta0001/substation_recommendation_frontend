@@ -1,8 +1,9 @@
 from typing import List
 from flask import Blueprint, render_template, request
-from src.config.appConfig import getJsonConfig
+from src.config.appConfig import getAppConfig
 from src.repos.fetchRecommendation import RecommendationSummaryRepo
 from src.services.latestRecommendationFetcher import LatestRecommendationFetcher
+from src.security.decorators import roles_required
 import json
 
 latestRecommendationPage = Blueprint('latestRecommendation', __name__,
@@ -10,14 +11,14 @@ latestRecommendationPage = Blueprint('latestRecommendation', __name__,
 
 
 @latestRecommendationPage.route('/', methods=['GET', 'POST'])
-# @role_required('code_book_editor')
+@roles_required(['recommendation_app_user'])
 def displayLatestRecommendation():
 
     if request.method == 'POST':
 
         return render_template('Recommendations/plotRecommendationById.html.j2')
 
-    # dbConfig = getJsonConfig()
+    # dbConfig = getAppConfig()
     # latestRecommendationSummaryRepo = LatestRecommendationFetcher(dbConfig.latestatestRecommendationFetchUrl)
     # resp = latestRecommendationSummaryRepo.fetchLatestRecommendation()
     # data = resp['data']
@@ -29,7 +30,7 @@ def displayLatestRecommendation():
 @latestRecommendationPage.route('/selected-data', methods=['POST'])
 def selected_data():
     # get application config
-    dbConfig = getJsonConfig()
+    dbConfig = getAppConfig()
     appDbConnStr = dbConfig.appDbConnStr
 
     selected_id = int(json.loads(request.form.get('selectedData'))['id'])
