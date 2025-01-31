@@ -3,6 +3,60 @@ $(document).ready(function() {
     // Initialize the DataTable
     var activeTable = null;
     debugger
+
+    // send mail button ID starts
+    // Add click handler for the send mail button
+    $('#sendMailBtn').on('click', function() {
+        // Get all data from the DataTable
+        const tableData = $('#pqVqViolationID').DataTable().data().toArray();
+        
+        // Filter for violated records only
+        const violatedRecords = tableData
+            .filter(record => record.isPqViolated || record.isVqViolated || record.isPqVqViolated)
+            .map(record => record.generating_station);
+            
+        // Create the data object to send
+        const dataToSend = {
+            timestamp: new Date().toISOString(),
+            violations: violatedRecords,
+            summary: {
+                totalRecords: tableData.length,
+                violatedRecords: violatedRecords.length
+            }
+        };
+        // Add loading state to the button
+        $('#sendMailBtn').prop('disabled', true);
+        $('#sendMailBtn .fas').addClass('fa-spin');
+        $.ajax({
+            url: '/sendPqVqViolationMail',
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',  // Specify content type
+            data: JSON.stringify(dataToSend), // Convert data to JSON string
+            success: function(response) {
+                // Show success message
+                alert('Mail sent successfully!');
+                console.log('Mail sent at ' + new Date().toLocaleTimeString());
+            },
+            error: function(xhr, status, error) {
+                // Show error message with more details
+                const errorMessage = xhr.responseJSON?.message || error || 'Unknown error occurred';
+                alert('Error sending mail: ' + errorMessage);
+                console.error("Error sending mail:", {
+                    status: status,
+                    error: error,
+                    details: xhr.responseText
+                });
+            },
+            complete: function() {
+                // Remove loading state from button
+                $('#sendMailBtn').prop('disabled', false);
+                $('#sendMailBtn .fas').removeClass('fa-spin');
+            }
+        });
+    });
+    // send mail button ID ends
+
     var table1 = $('#pqVqViolationID').DataTable({
         columns: [
             { title: "Timestamp", data: "time_stamp" },

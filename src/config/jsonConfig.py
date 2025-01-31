@@ -15,3 +15,7 @@ class JsonConfig:
     oauth_app_client_id: str = field(default="")
     oauth_app_client_secret: str = field(default="")
     oauth_provider_discovery_url: str = field(default="")
+    sender_email: str = field(default="email")
+    sender_password: str = field(default="password")
+    loginId: int = field(default="1")
+    smtp_server: str = field(default="smtpserver")

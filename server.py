@@ -13,6 +13,7 @@ import os
 from src.security.decorators import role_required
 from src.routeControllers.pqVqViolationData import pqVqViolationPage
 from src.routeControllers.pqVqViolationApi import pqVqViolationApiPage
+from src.routeControllers.sendMail import pqVqViolationMailPage
 
 # get application config
 appConfig = loadAppConfig()
@@ -42,6 +43,7 @@ app.register_blueprint(latestRecommendationPage, url_prefix='/latestRecommendati
 app.register_blueprint(latestRecommendationApiPage, url_prefix='/fetchLatestRecommendation')
 app.register_blueprint(pqVqViolationPage, url_prefix='/pqVqViolation')
 app.register_blueprint(pqVqViolationApiPage, url_prefix='/fetchPqVqViolation')
+app.register_blueprint(pqVqViolationMailPage, url_prefix='/sendPqVqViolationMail')
 
 if __name__ == '__main__':
     serverMode: str = appConfig.mode
