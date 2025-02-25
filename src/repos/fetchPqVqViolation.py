@@ -35,6 +35,7 @@ class PqVqViolationSummaryRepo():
             dbCur = conn.cursor()
 
             sql_fetch = 'SELECT * FROM "pq_violation" order by time_stamp desc'
+            sql_fetch = "SELECT * FROM pq_violation WHERE time_stamp >= NOW() - INTERVAL '6 hours' ORDER BY time_stamp DESC"
 
             data = pd.read_sql(sql_fetch, con=conn)
             # print(data)
