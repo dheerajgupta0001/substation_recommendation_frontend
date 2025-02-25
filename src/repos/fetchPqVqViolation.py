@@ -18,7 +18,7 @@ class PqVqViolationSummaryRepo():
         self.localConStr = dbConStr
         # print(dbConStr)
 
-    def fetchPqVqViolation(self) -> bool:
+    def fetchPqVqViolation(self, start_date, end_date) -> bool:
         """_summary_
 
         Returns:
@@ -34,8 +34,9 @@ class PqVqViolationSummaryRepo():
             # Create a cursor object using the connection
             dbCur = conn.cursor()
 
-            sql_fetch = 'SELECT * FROM "pq_violation" order by time_stamp desc'
-            sql_fetch = "SELECT * FROM pq_violation WHERE time_stamp >= NOW() - INTERVAL '6 hours' ORDER BY time_stamp DESC"
+            # sql_fetch = 'SELECT * FROM "pq_violation" order by time_stamp desc'
+            # sql_fetch = "SELECT * FROM pq_violation WHERE time_stamp >= NOW() - INTERVAL '6 hours' ORDER BY time_stamp DESC"
+            sql_fetch = "SELECT * FROM pq_violation WHERE time_stamp >= '{0}' and time_stamp <= '{1}'".format(start_date, end_date)
 
             data = pd.read_sql(sql_fetch, con=conn)
             # print(data)

@@ -2,6 +2,8 @@
 $(document).ready(function() {
     // Initialize the DataTable
     var activeTable = null;
+    var startDate = null;
+    var endDate = null;
     debugger
 
     // send mail button ID starts
@@ -56,6 +58,42 @@ $(document).ready(function() {
         });
     });
     // send mail button ID ends
+
+    // Set default date values (last 6 hours)
+    function setDefaultDates() {
+        const now = new Date();
+        const sixHoursAgo = new Date(now);
+        sixHoursAgo.setHours(now.getHours() - 6);
+        
+        // Format for datetime-local input
+        // const formatDate = (date) => {
+        //     return date.toISOString().slice(0, 16);
+        // };
+        
+        // $('#startDate').val(formatDate(sixHoursAgo));
+        // $('#endDate').val(formatDate(now));
+
+        // Format for datetime-local input (in local time zone)
+        const formatDateForInput = (date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            
+            // This format works with datetime-local inputs
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        };
+    
+        $('#startDate').val(formatDateForInput(sixHoursAgo));
+        $('#endDate').val(formatDateForInput(now));
+        
+        startDate = sixHoursAgo;
+        endDate = now;
+    }
+    
+    // Set default dates on page load
+    setDefaultDates();
 
     var table1 = $('#pqVqViolationID').DataTable({
         columns: [
@@ -122,10 +160,21 @@ $(document).ready(function() {
         // Add loading state to the button
         $('.btn-success').prop('disabled', true);
         $('.btn-success .fas').addClass('fa-spin');
+
+        // Get current date filter values
+        const startDateVal = $('#startDate').val() ? new Date($('#startDate').val()).toISOString() : null;
+        const endDateVal = $('#endDate').val() ? new Date($('#endDate').val()).toISOString() : null;
+        
+
         $.ajax({
             url: '/fetchPqVqViolation',
             method: 'GET',
             dataType: 'json',
+            // start Date & end Date
+            data: {
+                startDate: startDateVal,
+                endDate: endDateVal
+            },
             success: function(data) {
                 // Clear existing data and add new data
                 table1.clear().rows.add(data['data']['data1']).draw();
@@ -154,6 +203,17 @@ $(document).ready(function() {
 
     // Add click handler for the refresh button
     $('.btn-success').on('click', function() {
+        refreshDataTable();
+    });
+    
+    // Add click handler for the apply filter button
+    $('#applyDateFilter').on('click', function() {
+        refreshDataTable();
+    });
+    
+    // Add click handler for the reset filter button
+    $('#resetDateFilter').on('click', function() {
+        setDefaultDates();
         refreshDataTable();
     });
 

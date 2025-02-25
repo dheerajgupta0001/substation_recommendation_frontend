@@ -18,9 +18,12 @@ def fetchPqVqViolation():
     dbConfig = getAppConfig()
     data = {}
     try:
+        # Get date parameters from request
+        start_date = request.args.get('startDate', None)
+        end_date = request.args.get('endDate', None)
         # get PQ VQ violation Message
         pqVqViolationSummaryRepo = PqVqViolationSummaryRepo(dbConfig.appDbConnStr)
-        data1: List[IPqVqViolationSummary] = pqVqViolationSummaryRepo.fetchPqVqViolation()
+        data1: List[IPqVqViolationSummary] = pqVqViolationSummaryRepo.fetchPqVqViolation(start_date, end_date)
 
         data['data1'] = data1
 
